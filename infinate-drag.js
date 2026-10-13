@@ -39,10 +39,10 @@
 .ddg-gallery .ddg-stage:not(.ddg-dragging) .ddg-tile:hover{z-index:5;}
 .ddg-gallery .ddg-heading{position:absolute;inset:0;z-index:50;pointer-events:none;display:flex;box-sizing:border-box;padding:24px 32px;}
 .ddg-gallery .ddg-heading h1{margin:0;max-width:100%;overflow-wrap:break-word;word-break:break-word;font-size:var(--ddg-heading-size, clamp(1.5rem,4vw,3rem));}
-@media (max-width:768px){.ddg-gallery .ddg-heading{padding:20px 20px 80px;}}
+@media (max-width:768px){.ddg-gallery{--ddg-lift:110px;}.ddg-gallery .ddg-heading{padding:20px 20px calc(var(--ddg-lift,110px) + 56px);}}
 .ddg-gallery .ddg-heading.ddg-heading-invert h1{color:#fff;mix-blend-mode:difference;}
 .ddg-gallery .ddg-heading.ddg-heading-solid h1{color:var(--ddg-heading-color, #000);}
-.ddg-gallery .ddg-arrow{position:absolute;bottom:calc(24px + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%);z-index:60;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;mix-blend-mode:difference;animation:ddgArrowBounce 1.6s ease-in-out infinite;transition:opacity .4s ease;pointer-events:auto;}
+.ddg-gallery .ddg-arrow{position:absolute;bottom:calc(var(--ddg-lift, 24px) + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%);z-index:60;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;mix-blend-mode:difference;animation:ddgArrowBounce 1.6s ease-in-out infinite;transition:opacity .4s ease;pointer-events:auto;}
 .ddg-gallery .ddg-arrow svg{width:100%;height:100%;}
 .ddg-gallery .ddg-arrow.ddg-arrow-hidden{opacity:0;pointer-events:none;}
 @keyframes ddgArrowBounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(8px);}}
@@ -80,6 +80,7 @@
 
     if (cfg.grayscale) root.classList.add('ddg-grayscale');
     if (cfg.height) root.style.setProperty('--ddg-height', cfg.height);
+    if (isMobile && root.dataset.mobileLift) root.style.setProperty('--ddg-lift', root.dataset.mobileLift);
 
     const activeHeadingSize = isMobile && cfg.headingSizeMobile ? cfg.headingSizeMobile : cfg.headingSize;
     if (activeHeadingSize) root.style.setProperty('--ddg-heading-size', activeHeadingSize);
