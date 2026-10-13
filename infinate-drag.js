@@ -27,7 +27,7 @@
     const style = document.createElement('style');
     style.id = 'infinate-drag-styles';
     style.textContent = `
-.ddg-gallery{position:relative;width:100vw;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;height:var(--ddg-height, 90vh);overflow:hidden;background:transparent;}
+.ddg-gallery{position:relative;width:100vw;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;max-width:100vw;height:90vh;height:var(--ddg-height, 90svh);overflow:hidden;background:transparent;}
 .ddg-gallery .ddg-stage{position:absolute;inset:0;touch-action:none;overflow:hidden;}
 .ddg-gallery .ddg-field{position:absolute;top:0;left:0;}
 .ddg-gallery .ddg-tile{position:absolute;display:block;overflow:hidden;background:transparent;border-radius:2px;z-index:1;}
@@ -37,11 +37,12 @@
 .ddg-gallery .ddg-stage:not(.ddg-dragging) .ddg-tile:hover img{transform:scale(1.08);filter:brightness(1.08);}
 .ddg-gallery.ddg-grayscale .ddg-stage:not(.ddg-dragging) .ddg-tile:hover img{filter:grayscale(1) brightness(1.08);}
 .ddg-gallery .ddg-stage:not(.ddg-dragging) .ddg-tile:hover{z-index:5;}
-.ddg-gallery .ddg-heading{position:absolute;inset:0;z-index:50;pointer-events:none;display:flex;padding:24px 32px;}
-.ddg-gallery .ddg-heading h1{margin:0;font-size:var(--ddg-heading-size, clamp(1.5rem,4vw,3rem));}
+.ddg-gallery .ddg-heading{position:absolute;inset:0;z-index:50;pointer-events:none;display:flex;box-sizing:border-box;padding:24px 32px;}
+.ddg-gallery .ddg-heading h1{margin:0;max-width:100%;overflow-wrap:break-word;word-break:break-word;font-size:var(--ddg-heading-size, clamp(1.5rem,4vw,3rem));}
+@media (max-width:768px){.ddg-gallery .ddg-heading{padding:20px 20px 80px;}}
 .ddg-gallery .ddg-heading.ddg-heading-invert h1{color:#fff;mix-blend-mode:difference;}
 .ddg-gallery .ddg-heading.ddg-heading-solid h1{color:var(--ddg-heading-color, #000);}
-.ddg-gallery .ddg-arrow{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:60;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;mix-blend-mode:difference;animation:ddgArrowBounce 1.6s ease-in-out infinite;transition:opacity .4s ease;pointer-events:auto;}
+.ddg-gallery .ddg-arrow{position:absolute;bottom:calc(24px + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%);z-index:60;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;mix-blend-mode:difference;animation:ddgArrowBounce 1.6s ease-in-out infinite;transition:opacity .4s ease;pointer-events:auto;}
 .ddg-gallery .ddg-arrow svg{width:100%;height:100%;}
 .ddg-gallery .ddg-arrow.ddg-arrow-hidden{opacity:0;pointer-events:none;}
 @keyframes ddgArrowBounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(8px);}}
@@ -74,11 +75,11 @@
       headingSizeMobile:  root.dataset.headingSizeMobile || '',
       headingInvert:      root.dataset.headingInvert !== 'false',
       headingColor:       root.dataset.headingColor || '#000',
-      height:             root.dataset.height || '90vh',
+      height:             root.dataset.height || '',
     };
 
     if (cfg.grayscale) root.classList.add('ddg-grayscale');
-    root.style.setProperty('--ddg-height', cfg.height);
+    if (cfg.height) root.style.setProperty('--ddg-height', cfg.height);
 
     const activeHeadingSize = isMobile && cfg.headingSizeMobile ? cfg.headingSizeMobile : cfg.headingSize;
     if (activeHeadingSize) root.style.setProperty('--ddg-heading-size', activeHeadingSize);
